@@ -19,16 +19,26 @@ const SearchBooks = ({ books, onUpdateShelf }) => {
         let mounted = true;
         if (query.length > 3 && query !== "") {
             const searchBooks = async () => {
-                const res = await BooksAPI.search(query, 20);
+                const foundBooks = await BooksAPI.search(query, 20);
                 if (mounted) {
-                    setFilteredBooks(res);
+                    foundBooks.map(book => (
+                        books.forEach(shelvedBook => {
+                            if (book.title === "Anna Freud") console.log(shelvedBook);
+                            if (book.id === shelvedBook.id) {
+                                book.shelf = shelvedBook.shelf;
+                            }
+                        })
+
+                    ));
+                    console.log(foundBooks.filter(book => book.shelf));
+                    setFilteredBooks(foundBooks);
                 }
             };
 
             searchBooks();
         } else {
             if (mounted) {
-                setFilteredBooks(books);
+                setFilteredBooks([]);
             }
         }
 
